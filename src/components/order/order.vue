@@ -30,11 +30,18 @@ export default {
   methods: {
     // 初始化列表数据
     _initIndexListData () {
-      axios.get('/api/indexList').then(res => {
-        // console.log(res)
-        if (res.data.code === 0) {
-          this.orderData = res.data.data.data.poilist
-        }
+      // axios.get('/api/indexList').then(res => {
+      //   // console.log(res)
+      //   if (res.data.code === 0) {
+      //     this.orderData = res.data.data.data.poilist
+      //   }
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+
+      this.$http.get('/user/indexList').then(res => {
+          this.orderData = res.data
+        
       }).catch(err => {
         console.log(err)
       })

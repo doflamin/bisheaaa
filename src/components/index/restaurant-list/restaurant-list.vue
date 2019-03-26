@@ -31,10 +31,12 @@ export default {
   watch: {},
   methods: {
     _initRestaurantListData () {
-      axios.get('/api/restaurantList').then(res => {
-        if (res.data.code === 0) {
-          this.restaurantList = res.data.data.data.poilist
-        }
+      
+      this.$http.post('/user/restaurantList',{
+        typeName:+sessionStorage.getItem('typeName')
+      })
+      .then(res => {
+          this.restaurantList = res.data
       }).catch(err => {
         console.log(err)
       })

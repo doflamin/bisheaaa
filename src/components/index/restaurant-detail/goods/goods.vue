@@ -24,27 +24,22 @@
         <ul>
           <li class="foods-list foods-list-hook" v-for="item in goods" ref="foodList">
             <h1 class="title">{{ item.name }}</h1>
-
             <ul>
               <li class="foods-item" v-for="food in item.foods" @click="toFoodDetail(food, $event)">
                 <div class="icon">
                   <img v-lazy="food.icon">
                 </div>
-
                 <div class="content">
                   <h2 class="name">{{ food.name }}</h2>
                   <p class="desc">{{ food.description }}</p>
-
                   <div class="extra">
                     <span class="count">月售{{ food.sellCount }}份</span>
                     <span class="rating">好评率{{ food.rating }}%</span>
                   </div>
-
                   <div class="price">
                     <span class="now">￥{{ food.price }}</span>
                     <span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}</span>
                   </div>
-
                   <div class="control">
                     <cart-control :food="food" @drop="drop"></cart-control>
                   </div>
@@ -54,14 +49,12 @@
           </li>
         </ul>
       </div>
-
       <!-- 购物车 -->
       <shopcart ref="shopcartRef"
                 :selectFoods="selectFoods"
                 :deliveryPrice="seller.deliveryPrice"
                 :minPrice="seller.minPrice"></shopcart>
     </div>
-
     <!-- 商品详情页 -->
     <goods-detail @drop="drop" :food="selectedFood" ref="goodsDetailRef"></goods-detail>
   </div>
@@ -104,6 +97,13 @@ export default {
   methods: {
     // 初始化数据
     _initData () {
+      this.$http.get('/user/goods',{})
+      .then(res=>{
+
+      })
+      .catch(err=>{
+        
+      })
       axios.get('/api/goods').then(res => {
         if (res.data.code === 0) {
           this.goods = res.data.data

@@ -42,7 +42,7 @@ export default {
       //   return utils.http.urlParse().id
       // }
       seller: {
-        id: utils.http.urlParse().id || '0001'
+        id: +sessionStorage.getItem('sellerId')
       }
     }
   },
@@ -51,15 +51,7 @@ export default {
   methods: {
     // 初始化商家数据
     _initData () {
-      // vue-resource
-      // this.$http.get('/api/seller').then(res => {
-      //   console.log(res)
-      //   // this.someData = response.body;
-      // }, err => {
-      //   console.log(err)
-      // })
-
-      axios.get('/api/seller?id=' + this.seller.id).then(res => {
+      this.$http.get('/user/seller?id=' + this.seller.id).then(res => {
         if (res.data.code === 0) {
           // this.seller = res.data.data
 

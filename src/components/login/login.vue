@@ -32,56 +32,152 @@
 </template>
 
 <script>
-import HeaderBar from '@/components/base/header-bar/header-bar'
-import axios from 'axios'
+import HeaderBar from "@/components/base/header-bar/header-bar";
+import axios from "axios";
 
 export default {
   components: {
     HeaderBar
   },
-  data () {
+  data() {
     return {
-      selected: '1',
-      login_username: '',
-      login_password: '',
-      register_username: '',
-      register_email: '',
-      register_password1: '',
-      register_password2: ''
-    }
+      selected: "1",
+      login_username: "",
+      login_password: "",
+      register_username: "",
+      register_email: "",
+      register_password1: "",
+      register_password2: ""
+    };
   },
   props: {},
   watch: {},
   methods: {
-    back () {
+    back() {
       this.$router.push({
-        path: '/index'
-      })
+        path: "/index"
+      });
     },
-    login () {
-      axios.post('/user/login', {
-        username: this.login_username,
-        password: this.login_password
-      }).then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
-      })
+    login() {
+      if (this.login_username == "" || this.login_password == "") {
+        this.$Modal.info({
+          title: "提示",
+          content: "请输出用户名和密码"
+        });
+      } else {
+        this.$http
+          .get(
+            "/user/userInfo?userName=" +
+              this.login_username +
+              "&pwd=" +
+              this.login_password,
+            {}
+          )
+          .then(res => {
+            if (res.data.length == 0) {
+              sessionStorage.removeItem("userName");
+              this.$Modal.info({
+                title: "提示",
+                content: "用户名或密码错误"
+              });
+            } else {
+              sessionStorage.setItem("userName", res.data[0].userName);
+              sessionStorage.setItem("userId", res.data[0].userId);
+              this.$Modal.info({
+                title: "提示",
+                content: "成功",
+                onOk: () => {
+                  this.$router.push("/index");
+                }
+              });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
-    register () {
-      console.log('register')
+    register() {
+      if (this.register_username == "") {
+        this.$Modal.info({
+          title: "提示",
+          content: "用户名不能为空"
+        });
+      } else if (this.register_email == "") {
+        this.$Modal.info({
+          title: "提示",
+          content: "注册邮箱不能为空"
+        });
+      } else if (
+        this.register_password1 == "" ||
+        this.register_password2 == ""
+      ) {
+        this.$Modal.info({
+          title: "提示",
+          content: "密码不能为空"
+        });
+      } else {
+        if (this.register_password1 == this.register_password2) {
+          this.$http
+            .get("/user/isExistence?userName=" + this.register_username, {})
+            .then(res => {
+              if (res.data.length == 0) {
+                this.$http
+                  .post("/user/insertNewUser", {
+                    userName: this.register_username,
+                    email: this.register_email,
+                    pwd: this.register_password1
+                  })
+                  .then(res => {
+                    if (res.data != null) {
+                      sessionStorage.setItem(
+                        "userName",
+                        this.register_username
+                      );
+                      this.$Modal.info({
+                        title: "提示",
+                        content: "注册成功",
+                        onOk: () => {
+                          this.$router.push("/index");
+                        }
+                      });
+                    } else {
+                      his.$Modal.info({
+                        title: "提示",
+                        content: "注册失败,请联系后台管理员"
+                      });
+                    }
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+              } else {
+                this.$Modal.info({
+                  title: "提示",
+                  content: "该用户名已存在"
+                });
+              }
+            })
+            .catch(err => {});
+        } else {
+          this.$Modal.info({
+            title: "提示",
+            content: "两次密码不一致"
+          });
+        }
+      }
     }
   },
   filters: {},
   computed: {},
-  created () {},
-  mounted () {}
-}
+  created() {},
+  mounted() {}
+};
 </script>
 
-<style lang="scss" scoped>
-@import '~@/assets/scss/const.scss';
-@import '~@/assets/scss/mixin.scss';
+<style lang='scss' scoped>
+@import "~@/assets/scss/const.scss";
+@import "~@/assets/scss/mixin.scss";
 
 .login {
   color: #333;

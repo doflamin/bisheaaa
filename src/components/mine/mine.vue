@@ -10,8 +10,11 @@
         </div>
 
         <div class="name-wrapper" @click="login">
-          <span class="name">登录</span>
-          <span class="desc">个人信息 <i class="iconfont icon-more"></i></span>
+          <span class="name">{{userName}}</span>
+          <span class="desc">
+            个人信息
+            <i class="iconfont icon-more"></i>
+          </span>
         </div>
       </div>
 
@@ -36,11 +39,11 @@
       </cross-item>
 
       <cross-item name="收货地址">
-        <i class="iconfont icon-dizhi"></i>
+        <i class="iconfont icon-dizhi" @click="toAddress"></i>
       </cross-item>
 
       <cross-item name="余额">
-        <i class="iconfont icon-money"></i>
+        <i class="iconfont icon-money" @click="toBalance"></i>
       </cross-item>
     </div>
 
@@ -50,7 +53,7 @@
     <!-- 次要的栏目 -->
     <div class="minor">
       <cross-item name="关于">
-        <i class="iconfont icon-daohangguanyu"></i>
+        <i class="iconfont icon-daohangguanyu" @click="toAbout"></i>
       </cross-item>
     </div>
 
@@ -59,9 +62,9 @@
 </template>
 
 <script>
-import TabBar from '@/components/base/tab-bar/tab-bar'
-import CrossLine from '@/components/base/cross-line/cross-line'
-import CrossItem from '@/components/base/cross-item/cross-item'
+import TabBar from "@/components/base/tab-bar/tab-bar";
+import CrossLine from "@/components/base/cross-line/cross-line";
+import CrossItem from "@/components/base/cross-item/cross-item";
 
 export default {
   components: {
@@ -69,29 +72,52 @@ export default {
     CrossLine,
     CrossItem
   },
-  data () {
-    return {}
+  data() {
+    return {
+      userName: "登录"
+    };
   },
   props: {},
   watch: {},
   methods: {
-    login () {
+    login() {
       this.$router.push({
-        path: '/login'
-      })
+        path: "/login"
+      });
+    },
+    toAddress() {
+      this.$router.push({
+        path: "/address"
+      });
+    },
+    toAbout() {
+      this.$router.push({
+        path: "/about"
+      });
+    },
+    toBalance() {
+      this.$router.push({
+        path: "/balance"
+      });
     }
+
+    
   },
   filters: {},
   computed: {},
-  created () {},
-  mounted () {},
-  destroyed () {}
-}
+  created() {},
+  mounted() {
+    sessionStorage.getItem("userName")
+      ? (this.userName = sessionStorage.getItem("userName"))
+      : (this.userName = "登录");
+  },
+  destroyed() {}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/const.scss';
-@import '~@/assets/scss/mixin.scss';
+@import "~@/assets/scss/const.scss";
+@import "~@/assets/scss/mixin.scss";
 
 .mine {
   width: 100%;

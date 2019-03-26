@@ -13,10 +13,10 @@
 
     <!-- 种类 -->
     <div class="types">
-      <types-item v-for="item in types"
+      <types-item v-for="(item,index) in types"
                   :key="item.ico"
                   :ico="item.ico"
-                  :txt="item.txt" @toList="toList(item)"></types-item>
+                  :txt="item.txt" @toList="toList(item,index)"></types-item>
     </div>
 
     <!-- 横线分隔条 -->
@@ -28,7 +28,7 @@
       <seller-list-item v-for="item in indexList"
                         :key="item.name"
                         :data="item"
-                        @toRestaurant="toRestaurant()"></seller-list-item>
+                        @toRestaurant="toRestaurant(item)"></seller-list-item>
     </div>
 
     <tab-bar></tab-bar>
@@ -41,7 +41,7 @@ import TypesItem from '@/components/base/types-item/types-item'
 import CrossLine from '@/components/base/cross-line/cross-line'
 import TitleBar from '@/components/base/title-bar/title-bar'
 import SellerListItem from '@/components/base/seller-list-item/seller-list-item'
-import axios from 'axios'
+
 
 export default {
   components: {
@@ -98,23 +98,23 @@ export default {
   props: {},
   watch: {},
   methods: {
-    toList (item) {
+    toList (item,index) {
+      sessionStorage.setItem('typeName',index+1)
       this.$router.push({
         path: '/restaurant_list'
       })
     },
-    toRestaurant () {
+    toRestaurant (item) {
+      sessionStorage.setItem('sellerId',item.id)
       this.$router.push({
         path: '/restaurant'
       })
     },
     // 初始化列表数据
     _initIndexListData () {
-      axios.get('/api/indexList').then(res => {
-        // console.log(res)
-        if (res.data.code === 0) {
-          this.indexList = res.data.data.data.poilist
-        }
+      this.$http.get('/user/indexList').then(res => {
+          this.indexList = res.data
+        
       }).catch(err => {
         console.log(err)
       })

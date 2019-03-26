@@ -1,17 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-// import Index from '@/components/index/index'
-// import Find from '@/components/find/find'
-// import Order from '@/components/order/order'
-// import Mine from '@/components/mine/mine'
-// import RestaurantDetail from '@/components/index/restaurant-detail/restaurant-detail'
-// import RestaurantList from '@/components/index/restaurant-list/restaurant-list'
-// import Goods from '@/components/index/restaurant-detail/goods/goods'
-// import Ratings from '@/components/index/restaurant-detail/ratings/ratings'
-// import Seller from '@/components/index/restaurant-detail/seller/seller'
-// import login from '@/components/login/login'
-
 Vue.use(Router)
 
 // 路由懒加载
@@ -65,6 +53,32 @@ const login = (resolve) => {
     resolve(module)
   })
 }
+const Address = (resolve) => {
+  import('@/components/mine/address').then((module) => {
+    resolve(module)
+  })
+}
+const About = (resolve) => {
+  import('@/components/mine/about').then((module) => {
+    resolve(module)
+  })
+}
+const Balance = (resolve) => {
+  import('@/components/mine/balance').then((module) => {
+    resolve(module)
+  })
+}
+const Record = (resolve) => {
+  import('@/components/mine/Record').then((module) => {
+    resolve(module)
+  })
+}
+const Collection = (resolve) => {
+  import('@/components/mine/Collection').then((module) => {
+    resolve(module)
+  })
+}
+
 
 export default new Router({
   routes: [
@@ -119,10 +133,36 @@ export default new Router({
       path: '/order',
       component: Order
     },
+    //地址
+    {
+      path: '/address',
+      component: Address
+    },
+    //关于
+    {
+      path: '/about',
+      component: About
+    },
+    //余额
+    {
+      path: '/balance',
+      component: Balance
+    },
+    //我的足迹
+    {
+      path: '/record',
+      component: Record
+    },
+    //收藏
+     {
+      path: '/collection',
+      component: Collection
+    },
     // 我的
     {
       path: '/mine',
-      component: Mine
+      component: Mine,
+     
     }
   ]
 })

@@ -5,7 +5,7 @@
     <!-- 主要内容：左侧头像、右侧描述 -->
     <div class="content-wrapper">
       <div class="avatar">
-        <img :src="seller.avatar">
+        <img :src="seller.pic_url">
       </div>
 
       <div class="content">
@@ -15,7 +15,7 @@
         </div>
 
         <div class="description">
-          <span>{{ seller.description }} / {{ seller.deliveryTime }}</span>分钟送达
+          <span>{{ seller.description }} / {{ seller.avg_delivery_time }}</span>分钟送达
         </div>
 
         <!-- 活动 -->
@@ -54,7 +54,7 @@
             <div class="star-wrapper">
               <star :size="48" :score="seller.score"></star>
             </div>
-
+<!-- 
             <div class="title">
               <div class="line"></div>
               <div class="text">优惠信息</div>
@@ -66,7 +66,7 @@
                 <span class="icon" :class="classMap[seller.supports[index].type]"></span>
                 <span class="text">{{ seller.supports[index].description }}</span>
               </li>
-            </ul>
+            </ul> -->
 
             <div class="title">
               <div class="line"></div>

@@ -3,7 +3,7 @@
 <template>
   <div class="seller-list-item" @click="toRestaurant(data)">
     <div class="left">
-      <img v-lazy="data.pic_url">
+      <img :src="data.pic_url">
     </div>
 
     <div class="right">
@@ -22,8 +22,8 @@
         <span class="average">{{ data.average_price_tip }}</span>
       </div>
 
-      <div class="activity" v-for="sup in data.discounts2">
-        <p><img :src="sup.icon_url">{{sup.info}}</p>
+      <div class="activity">
+        <p><img :src="data.icon_url">{{data.info}}</p>
       </div>
     </div>
   </div>
