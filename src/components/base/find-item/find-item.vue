@@ -2,14 +2,20 @@
 
 <template>
   <div class="find-item">
-    <div class="top">
+    <div class="top" @click="toFind(data)">
       <img v-lazy="data.img">
     </div>
 
     <div class="bottom">
       <div class="title">{{data.title}}</div>
       <div class="writer">周边生活</div>
-      <div class="view">{{data.view}}人看过</div>
+      <div class="view">{{data.view}}人看过  </div>
+      <Icon 
+      v-if="data.writer_id==this.userId?true:false" type="md-trash" 
+      @click="deleteArticle(data.find_id)" 
+      color="#ed4014" 
+      size="20"/>
+      
     </div>
   </div>
 </template>
@@ -18,19 +24,47 @@
 export default {
   components: {},
   data () {
-    return {}
+    return {
+      userId:null
+    }
   },
   props: {
     data: {
-      type: Object
+      type: Object,
+      
     }
   },
   watch: {},
-  methods: {},
+  methods: {
+    toFind(item){
+      sessionStorage.setItem('findId',item.find_id)
+      this.$router.push('/article')
+    },
+    deleteArticle(params){
+      
+      
+      this.$http.post('/user/deleteArticle',{
+        find_id:params
+      }).then(res => {
+        this.$Modal.success({
+            title: "成功",
+            content: "删除成功",
+            onOk:()=>{
+              this.$emit('_initFindListData')
+            }
+          });
+          
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  },
   filters: {},
   computed: {},
   created () {},
-  mounted () {}
+  mounted () {
+    this.userId = +sessionStorage.getItem('userId')
+  }
 }
 </script>
 

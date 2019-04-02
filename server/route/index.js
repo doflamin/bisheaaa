@@ -8,8 +8,18 @@ router.get('/isExistence', user.isExistence)
 router.get('/getAddress', user.getAddress)
 router.get('/seller', user.seller)
 router.get('/goods', user.goods)
+router.get('/findList', user.findList)
+router.get('/article', user.article)
 
 
+
+router.post('/upload', user.upload)
+router.post('/deleteArticle', user.deleteArticle)
+router.post('/viewAdd', user.viewAdd)
+
+
+
+router.post('/addArticle', user.addArticle)
 
 router.post('/restaurantList', user.restaurantList)
 router.post('/insertNewUser', user.insertNewUser)

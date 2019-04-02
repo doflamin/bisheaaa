@@ -2,8 +2,10 @@
 
 <template>
   <div class="find">
-    <div v-for="item in findListData">
-      <find-item :data="item"></find-item>
+    <Button  long @click="addNewArticle"><Icon type="md-add" /></Button>
+    <div v-for="(item,index) in findListData"  :key="index">
+      <find-item :data="item" @_initFindListData="_initFindListData" ></find-item>
+
     </div>
 
     <tab-bar></tab-bar>
@@ -29,19 +31,32 @@ export default {
   watch: {},
   methods: {
     _initFindListData () {
-      axios.get('/api/findList').then(res => {
+      // axios.get('/api/findList').then(res => {
+      //   if (res.data.code === 0) {
+      //     this.findListData = res.data.data.data
+      //   }
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+      console.log(2323)
+      this.$http.get('/user/findList').then(res => {
         if (res.data.code === 0) {
-          this.findListData = res.data.data.data
+          this.findListData = res.data.data
         }
       }).catch(err => {
         console.log(err)
       })
+    },
+    
+    addNewArticle(){
+      this.$router.push('/addArticle')
     }
   },
   filters: {},
   computed: {},
   created () {
     this._initFindListData()
+    // this.toFind()
   },
   mounted () {},
   destroyed () {}

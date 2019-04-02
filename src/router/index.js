@@ -80,6 +80,17 @@ const Collection = (resolve) => {
 }
 
 
+const Article = (resolve) => {
+  import('@/components/find/article').then((module) => {
+    resolve(module)
+  })
+}
+
+const AddArticle = (resolve) => {
+  import('@/components/find/addArticle').then((module) => {
+    resolve(module)
+  })
+}
 export default new Router({
   routes: [
     // 根路径
@@ -128,6 +139,17 @@ export default new Router({
       path: '/find',
       component: Find
     },
+    // 发现具体内容
+    {
+      path: '/article',
+      component: Article
+    },
+    // 添加
+    {
+      path: '/addArticle',
+      component: AddArticle
+    },
+    
     // 订单
     {
       path: '/order',

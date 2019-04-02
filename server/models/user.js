@@ -40,6 +40,27 @@ const seller = async function (name) {
     });
   })
 }
+
+const findList = async function (name) {
+	const sql = `SELECT * FROM mydatabase.find_info`
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+const article = async function (name) {
+	const sql = `SELECT * FROM mydatabase.find_info where find_id = ?`
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
 const goods = async function (name) {
 	const sql = `SELECT * FROM mydatabase.goods_info`
   return new Promise((resolve, reject) => {
@@ -52,9 +73,10 @@ const goods = async function (name) {
 }
 
 const foods = async function (name) {
-	const sql = `SELECT * FROM mydatabase.foods_info where foods_id = ?`
+	const sql = `SELECT * FROM mydatabase.foods_info where find_in_set(foods_id,?)`
   return new Promise((resolve, reject) => {
     db.query(sql, name).then(res => {
+      
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -103,6 +125,17 @@ const insertNewAdd = async function (name) {
     });
   })
 }
+const addArticle = async function (name) {
+	const sql = `insert into find_info (bizType,title,body,writer_id,view) values (1,?,?,?,0)`
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+
 const delAddress = async function (name) {
 	const sql = `delete from add_info where add_id = ? `
   return new Promise((resolve, reject) => {
@@ -114,6 +147,26 @@ const delAddress = async function (name) {
   })
 }
 
+const deleteArticle = async function (name) {
+	const sql = `delete from find_info where find_id = ? `
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+const viewAdd = async function (name) {
+	const sql = `update  find_info SET view = ? where find_id = ? `
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
 
 module.exports = {
   getUserByName,
@@ -126,5 +179,10 @@ module.exports = {
   restaurantList,
   seller,
   goods,
-  foods
+  foods,
+  findList,
+  article,
+  addArticle,
+  deleteArticle,
+  viewAdd
 }
