@@ -91,6 +91,22 @@ const AddArticle = (resolve) => {
     resolve(module)
   })
 }
+const myMall = (resolve) => {
+  import('@/components/myMall/myMall').then((module) => {
+    resolve(module)
+  })
+}
+const addOrder = (resolve) => {
+  import('@/components/order/addOrder').then((module) => {
+    resolve(module)
+  })
+}
+const Admin = (resolve) => {
+  import('@/components/admin/admin').then((module) => {
+    resolve(module)
+  })
+}
+
 export default new Router({
   routes: [
     // 根路径
@@ -104,6 +120,13 @@ export default new Router({
       path: '/index',
       component: Index
     },
+    // 管理员
+    {
+      path: '/admin',
+      component: Admin
+    },
+
+    
     // 登录
     {
       path: '/login',
@@ -150,11 +173,22 @@ export default new Router({
       component: AddArticle
     },
     
+    // 商家修改店铺信息
+    {
+      path: '/myMall',
+      component: myMall
+    },
     // 订单
     {
       path: '/order',
       component: Order
     },
+    // 添加订单
+    {
+      path: '/addOrder',
+      component: addOrder
+    },
+        
     //地址
     {
       path: '/address',

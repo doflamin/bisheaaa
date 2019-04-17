@@ -9,6 +9,7 @@
         <ul>
           <li class="menu-item"
               v-for="(item, index) in goods"
+              :key="index"
               :class="{'current': currentIndex === index}"
               @click="selectMenu(index, $event)">
             <span class="text">
@@ -97,25 +98,34 @@ export default {
   methods: {
     // 初始化数据
     _initData () {
-      this.$http.get('/user/goods',{})
+      this.$http.get('/user/goods?seller_id='+sessionStorage.getItem('sellerId'),{})
       .then(res=>{
-
-      })
-      .catch(err=>{
-        
-      })
-      axios.get('/api/goods').then(res => {
         if (res.data.code === 0) {
           this.goods = res.data.data
         }
-
-        // DOM 渲染完成才能进行计算
+        
         setTimeout(() => {
           // 初始化 BScroll
           this._initScroll()
           // 计算右侧每一大项的高度
           this._calcHeight()
         }, 20)
+      })
+      .catch(err=>{
+        
+      })
+      axios.get('/api/goods').then(res => {
+        // if (res.data.code === 0) {
+        //   this.goods = res.data.data
+        // }
+
+        // // DOM 渲染完成才能进行计算
+        // setTimeout(() => {
+        //   // 初始化 BScroll
+        //   this._initScroll()
+        //   // 计算右侧每一大项的高度
+        //   this._calcHeight()
+        // }, 20)
       }).catch(err => {
         console.log(err)
       })

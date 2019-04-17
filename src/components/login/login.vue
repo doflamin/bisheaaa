@@ -24,7 +24,17 @@
         <mt-field label="邮箱" placeholder="请输入邮箱" type="email" v-model="register_email"></mt-field>
         <mt-field label="密码" placeholder="请输入密码" type="password" v-model="register_password1"></mt-field>
         <mt-field label="确认密码" placeholder="请确认密码" type="password" v-model="register_password2"></mt-field>
-
+        <mt-field label="用户类型选择">
+          <RadioGroup v-model="userType">
+              <Radio label="0">
+                  <span>用户</span>
+              </Radio>
+              <Radio label="1">
+                  <span>商家</span>
+              </Radio>
+          </RadioGroup>
+        </mt-field>
+        
         <mt-button type="primary" size="large" @click.native="register">注册</mt-button>
       </mt-tab-container-item>
     </mt-tab-container>
@@ -47,7 +57,8 @@ export default {
       register_username: "",
       register_email: "",
       register_password1: "",
-      register_password2: ""
+      register_password2: "",
+      userType:'0'
     };
   },
   props: {},
@@ -81,13 +92,22 @@ export default {
                 content: "用户名或密码错误"
               });
             } else {
+              
               sessionStorage.setItem("userName", res.data[0].userName);
               sessionStorage.setItem("userId", res.data[0].userId);
+              sessionStorage.setItem("userType", res.data[0].type);
+              sessionStorage.setItem("userCollection", res.data[0].collection);
+
               this.$Modal.info({
                 title: "提示",
                 content: "成功",
                 onOk: () => {
-                  this.$router.push("/index");
+                  if (res.data[0].type == 2) {
+                    this.$router.push("/admin");
+                  }else{
+                    this.$router.push("/index");
+                  }
+                  
                 }
               });
             }
@@ -126,14 +146,16 @@ export default {
                   .post("/user/insertNewUser", {
                     userName: this.register_username,
                     email: this.register_email,
-                    pwd: this.register_password1
+                    pwd: this.register_password1,
+                    type:+this.userType
                   })
                   .then(res => {
                     if (res.data != null) {
-                      sessionStorage.setItem(
-                        "userName",
-                        this.register_username
-                      );
+                      
+                      sessionStorage.setItem("userId",res.data.insertId);
+                      sessionStorage.setItem("userName",this.register_username);
+                      sessionStorage.setItem("userType", this.userType);
+
                       this.$Modal.info({
                         title: "提示",
                         content: "注册成功",
@@ -142,7 +164,7 @@ export default {
                         }
                       });
                     } else {
-                      his.$Modal.info({
+                      this.$Modal.info({
                         title: "提示",
                         content: "注册失败,请联系后台管理员"
                       });

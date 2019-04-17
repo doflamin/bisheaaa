@@ -26,10 +26,12 @@
       <!-- 飞行小球 -->
       <div class="ball-content">
         <div v-for="ball in balls">
-          <transition name="drop"
-                      @before-enter="beforeDrop"
-                      @enter="dropping"
-                      @after-enter="afterDrop">
+          <transition
+            name="drop"
+            @before-enter="beforeDrop"
+            @enter="dropping"
+            @after-enter="afterDrop"
+          >
             <div class="ball" v-show="ball.show">
               <div class="inner inner-hook"></div>
             </div>
@@ -72,15 +74,15 @@
 </template>
 
 <script>
-import CartControl from '@/components/base/cart-control/cart-control'
-import BScroll from 'better-scroll'
-import { MessageBox } from 'mint-ui'
+import CartControl from "@/components/base/cart-control/cart-control";
+import BScroll from "better-scroll";
+import { MessageBox } from "mint-ui";
 
 export default {
   components: {
     CartControl
   },
-  data () {
+  data() {
     return {
       // 每个小球当前的状态
       balls: [
@@ -99,14 +101,14 @@ export default {
       dropBalls: [],
       // 购物车列表是否折叠
       listShow: false
-    }
+    };
   },
   props: {
     // 加入购物车的商品
     selectFoods: {
       type: Array,
-      default () {
-        return []
+      default() {
+        return [];
       }
     },
     // 配送费
@@ -121,75 +123,75 @@ export default {
     }
   },
   watch: {
-    selectFoods () {
+    selectFoods() {
       if (this.scroll) {
-        this.scroll.refresh()
+        this.scroll.refresh();
       }
     }
   },
   methods: {
     // 点击 + 派发的事件
     // 取一个未下落的小球执行接下来的下落动作
-    drop (el) {
+    drop(el) {
       for (let i = 0; i < this.balls.length; i++) {
-        let ball = this.balls[i]
+        let ball = this.balls[i];
         if (!ball.show) {
-          ball.show = true
-          ball.el = el
-          this.dropBalls.push(ball)
-          return
+          ball.show = true;
+          ball.el = el;
+          this.dropBalls.push(ball);
+          return;
         }
       }
     },
     // 对 show = true 的小球设置动作
-    beforeDrop (el) {
-      let count = this.balls.length
+    beforeDrop(el) {
+      let count = this.balls.length;
 
       while (count--) {
-        let ball = this.balls[count]
+        let ball = this.balls[count];
         if (ball.show) {
-          let rect = ball.el.getBoundingClientRect()
-          let x = rect.left - 32
-          let y = -(window.innerHeight - rect.top - 22)
+          let rect = ball.el.getBoundingClientRect();
+          let x = rect.left - 32;
+          let y = -(window.innerHeight - rect.top - 22);
 
-          el.style.display = ''
-          el.style.webkitTransform = `translate3d(0,${y}px,0)`
-          el.style.transform = `translate3d(0,${y}px,0)`
+          el.style.display = "";
+          el.style.webkitTransform = `translate3d(0,${y}px,0)`;
+          el.style.transform = `translate3d(0,${y}px,0)`;
 
-          let inner = el.getElementsByClassName('inner-hook')[0]
-          inner.style.webkitTransform = `translate3d(${x}px,0,0)`
-          inner.style.transform = `translate3d(${x}px,0,0)`
+          let inner = el.getElementsByClassName("inner-hook")[0];
+          inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+          inner.style.transform = `translate3d(${x}px,0,0)`;
         }
       }
     },
-    dropping (el, done) {
+    dropping(el, done) {
       /* eslint-disable no-unused-vars */
-      let rf = el.offsetHeight // 重绘，否则小球不会消失
+      let rf = el.offsetHeight; // 重绘，否则小球不会消失
       this.$nextTick(() => {
-        el.style.webkitTransform = 'translate3d(0,0,0)'
-        el.style.transform = 'translate3d(0,0,0)'
+        el.style.webkitTransform = "translate3d(0,0,0)";
+        el.style.transform = "translate3d(0,0,0)";
 
-        let inner = el.getElementsByClassName('inner-hook')[0]
-        inner.style.webkitTransform = 'translate3d(0,0,0)'
-        inner.style.transform = 'translate3d(0,0,0)'
+        let inner = el.getElementsByClassName("inner-hook")[0];
+        inner.style.webkitTransform = "translate3d(0,0,0)";
+        inner.style.transform = "translate3d(0,0,0)";
 
-        el.addEventListener('transitionend', done)
-      })
+        el.addEventListener("transitionend", done);
+      });
     },
     // 动作做完就把该小球 show=false
-    afterDrop (el) {
-      let ball = this.dropBalls.shift()
+    afterDrop(el) {
+      let ball = this.dropBalls.shift();
       if (ball) {
-        ball.show = false
-        el.style.display = 'none'
+        ball.show = false;
+        el.style.display = "none";
       }
     },
-    toggleList () {
+    toggleList() {
       if (!this.totalCount) {
-        return
+        return;
       }
 
-      this.listShow = !this.listShow
+      this.listShow = !this.listShow;
 
       // 初始化 better-scroll
       if (this.listShow) {
@@ -198,71 +200,88 @@ export default {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$refs.listContentRef, {
               click: true
-            })
+            });
           } else {
-            this.scroll.refresh()
+            this.scroll.refresh();
           }
-        }, 20)
+        }, 20);
       }
     },
     // 支付
-    pay () {
+    pay() {
       if (this.totalPrice < this.minPrice) {
-        return
+        return;
       }
       // mint UI
-      MessageBox.confirm(`您共需支付 ${this.totalPrice} 元`, '结算')
+      // MessageBox.confirm(`您共需支付 ${this.totalPrice} 元`, '结算')
+
+      if (sessionStorage.getItem("userId")) {
+        sessionStorage.setItem("order", JSON.stringify(this.selectFoods));
+        sessionStorage.setItem("totalPrice", JSON.stringify(this.totalPrice));
+
+        this.$router.push({
+          path: "/addOrder"
+        });
+      } else {
+        this.$Modal.info({
+          title: "失败",
+          content: "请先登录再下单",
+          onOk: () => {
+            this.$router.push("/index");
+          }
+        });
+      }
     },
     // 清空
-    empty () {
-      this.selectFoods.forEach((food) => {
-        food.count = 0
-      })
+    empty() {
+      this.selectFoods.forEach(food => {
+        food.count = 0;
+      });
 
-      this.listShow = false
+      this.listShow = false;
     },
-    hideList () {
-      this.listShow = false
+    hideList() {
+      this.listShow = false;
     }
   },
   filters: {},
   computed: {
     // 所选商品总价
-    totalPrice () {
-      let total = 0
-      this.selectFoods.forEach((food) => {
-        total += food.price * food.count
-      })
-      return total
+    totalPrice() {
+      let total = 0;
+      this.selectFoods.forEach(food => {
+        total += food.price * food.count;
+      });
+      return total;
     },
     // 所选商品总数量
-    totalCount () {
-      let total = 0
-      this.selectFoods.forEach((food) => {
-        total += food.count
-      })
-      return total
+    totalCount() {
+      let total = 0;
+      this.selectFoods.forEach(food => {
+        total += food.count;
+      });
+      return total;
     },
     // 20元起送 、 还差10元起送 、 去结算
-    payDesc () {
+    payDesc() {
       if (this.totalPrice === 0) {
-        return `${this.minPrice}元起送`
+        return `${this.minPrice}元起送`;
       } else if (this.totalPrice < this.minPrice) {
-        return `还差${this.minPrice - this.totalPrice}元起送`
+        return `还差${this.minPrice - this.totalPrice}元起送`;
       } else {
-        return '去结算'
+        return "去结算";
       }
     }
   },
-  created () {},
-  mounted () {},
-  destroyed () {}
-}
+  created() {},
+  mounted() {},
+  destroyed() {}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/const.scss';
-@import '~@/assets/scss/mixin.scss';
+@import "~@/assets/scss/const.scss";
+@import "~@/assets/scss/mixin.scss";
 
 .shopcart {
   .content {
@@ -305,7 +324,7 @@ export default {
             }
           }
           .logoLight {
-            background-color: #FFDA61;
+            background-color: #ffda61;
             & i {
               color: #333;
             }
@@ -361,7 +380,7 @@ export default {
           color: rgba(255, 255, 255, 0.4);
           background-color: #2b333b;
           &.payLight {
-            background-color: #FFDA61;
+            background-color: #ffda61;
             color: #333;
           }
         }
@@ -389,7 +408,7 @@ export default {
         width: 16px;
         height: 16px;
         border-radius: 50%;
-        background-color: #FFD161;
+        background-color: #ffd161;
         transition: all 0.4s linear;
       }
     }
@@ -401,10 +420,12 @@ export default {
       z-index: -1;
       width: 100%;
       transform: translate3d(0, -100%, 0);
-      &.fold-enter-active, &.fold-leave-active {
+      &.fold-enter-active,
+      &.fold-leave-active {
         transition: all 0.5s;
       }
-      &.fold-enter, &.fold-leave-active {
+      &.fold-enter,
+      &.fold-leave-active {
         transform: translate3d(0, 0, 0);
       }
       .list-header {
@@ -468,10 +489,12 @@ export default {
     opacity: 1;
     backdrop-filter: blur(10px);
     background-color: rgba(7, 17, 27, 0.6);
-    &.fold-enter-active, &.fold-leave-active {
-      transition: all .5s;
+    &.fold-enter-active,
+    &.fold-leave-active {
+      transition: all 0.5s;
     }
-    &.fold-enter, &.fold-leave-active {
+    &.fold-enter,
+    &.fold-leave-active {
       opacity: 0;
       background: rgba(7, 17, 27, 0);
     }

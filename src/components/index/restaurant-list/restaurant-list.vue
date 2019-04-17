@@ -7,7 +7,7 @@
     <seller-list-item v-for="item in restaurantList"
                       :key="item.name"
                       :data="item"
-                      @toRestaurant="toRestaurant()"></seller-list-item>
+                      @toRestaurant="toRestaurant(item)"></seller-list-item>
   </div>
 </template>
 
@@ -46,7 +46,8 @@ export default {
         path: '/index'
       })
     },
-    toRestaurant () {
+    toRestaurant (item) {
+      sessionStorage.setItem('sellerId',item.id)
       this.$router.push({
         path: '/restaurant'
       })

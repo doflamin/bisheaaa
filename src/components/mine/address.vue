@@ -71,7 +71,6 @@ export default {
           });
         },
         onOk: () => {
-          console.log(this.value);
           this.$http
             .post("/user/addNewAdd", {
               userId: +sessionStorage.getItem("userId"),

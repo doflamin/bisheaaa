@@ -10,7 +10,8 @@
         </div>
 
         <div class="name-wrapper" @click="login">
-          <span class="name">{{userName}}</span>
+          <span class="name">{{userType}}{{userName}}</span>
+
           <span class="desc">
             个人信息
             <i class="iconfont icon-more"></i>
@@ -30,20 +31,22 @@
 
     <!-- 重要的栏目 -->
     <div class="important">
-      <cross-item name="我的收藏">
-        <i class="iconfont icon-shoucang1"></i>
+      
+      <cross-item name="我的收藏" v-if="this.userType == '用户'?true:false">
+        <i class="iconfont icon-shoucang1" @click="toCollection"></i>
       </cross-item>
+      
 
-      <cross-item name="我的足迹">
-        <i class="iconfont icon-zuji"></i>
-      </cross-item>
-
-      <cross-item name="收货地址">
+      <cross-item name="收货地址" v-if="this.userType == '用户'?true:false">
         <i class="iconfont icon-dizhi" @click="toAddress"></i>
       </cross-item>
 
       <cross-item name="余额">
         <i class="iconfont icon-money" @click="toBalance"></i>
+      </cross-item>
+
+      <cross-item name="我的店铺" v-if="this.userType == '用户'?false:true">
+        <i class="iconfont icon-money"  @click="toMyMall"></i>
       </cross-item>
     </div>
 
@@ -74,7 +77,9 @@ export default {
   },
   data() {
     return {
-      userName: "登录"
+      userName: "登录",
+      userType: "",
+      
     };
   },
   props: {},
@@ -85,6 +90,12 @@ export default {
         path: "/login"
       });
     },
+    toCollection() {
+      this.$router.push({
+        path: "/collection"
+      });
+    },
+    
     toAddress() {
       this.$router.push({
         path: "/address"
@@ -99,9 +110,12 @@ export default {
       this.$router.push({
         path: "/balance"
       });
+    },
+    toMyMall(){
+      this.$router.push({
+        path: "/myMall"
+      });
     }
-
-    
   },
   filters: {},
   computed: {},
@@ -110,6 +124,12 @@ export default {
     sessionStorage.getItem("userName")
       ? (this.userName = sessionStorage.getItem("userName"))
       : (this.userName = "登录");
+
+    sessionStorage.getItem("userType")
+      ? sessionStorage.getItem("userType") == 0
+        ? (this.userType = "用户")
+        : (this.userType = "商家")
+      : (this.userType = "");
   },
   destroyed() {}
 };

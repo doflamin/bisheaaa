@@ -2,7 +2,7 @@
 
 <template>
   <div class="order">
-    <div v-for="item in orderData">
+    <div v-for="(item,index) in orderData" :key="index">
       <order-item :data="item"></order-item>
     </div>
 
@@ -11,25 +11,25 @@
 </template>
 
 <script>
-import TabBar from '@/components/base/tab-bar/tab-bar'
-import OrderItem from '@/components/base/order-item/order-item'
-import axios from 'axios'
+import TabBar from "@/components/base/tab-bar/tab-bar";
+import OrderItem from "@/components/base/order-item/order-item";
+import axios from "axios";
 
 export default {
   components: {
     TabBar,
     OrderItem
   },
-  data () {
+  data() {
     return {
       orderData: []
-    }
+    };
   },
   props: {},
   watch: {},
   methods: {
     // 初始化列表数据
-    _initIndexListData () {
+    _initIndexListData() {
       // axios.get('/api/indexList').then(res => {
       //   // console.log(res)
       //   if (res.data.code === 0) {
@@ -38,29 +38,39 @@ export default {
       // }).catch(err => {
       //   console.log(err)
       // })
-
-      this.$http.get('/user/indexList').then(res => {
-          this.orderData = res.data
-        
-      }).catch(err => {
-        console.log(err)
-      })
+      this.$http
+        .get("/user/getOrderByUserId?userId="+sessionStorage.getItem('userId'))
+        .then(res => {
+          this.orderData = res.data.data.reverse();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      this.$http
+        .get("/user/indexList")
+        .then(res => {
+          // this.orderData = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   filters: {},
   computed: {},
-  created () {
+  created() {
     // 初始化列表数据
-    this._initIndexListData()
+    this._initIndexListData();
   },
-  mounted () {},
-  destroyed () {}
-}
+  mounted() {},
+  destroyed() {}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/const.scss';
-@import '~@/assets/scss/mixin.scss';
+@import "~@/assets/scss/const.scss";
+@import "~@/assets/scss/mixin.scss";
 
-.order {}
+.order {
+}
 </style>

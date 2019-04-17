@@ -17,9 +17,9 @@
       </div>
 
       <div class="fee">
-        <span class="start">{{ data.min_price_tip }}</span>
-        <span class="deliver">{{ data.shipping_fee_tip }}</span>
-        <span class="average">{{ data.average_price_tip }}</span>
+        <span class="start">起送¥{{ data.min_price_tip }}</span>
+        <span class="deliver">配送¥{{ data.shipping_fee_tip }}</span>
+        <span class="average">人均¥{{ data.average_price_tip }}</span>
       </div>
 
       <div class="activity">

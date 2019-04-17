@@ -2,7 +2,7 @@
 
 <template>
   <div class="find">
-    <Button  long @click="addNewArticle"><Icon type="md-add" /></Button>
+    <Button  v-if="this.userType==0?false:true" long @click="addNewArticle"><Icon type="md-add" /></Button>
     <div v-for="(item,index) in findListData"  :key="index">
       <find-item :data="item" @_initFindListData="_initFindListData" ></find-item>
 
@@ -24,7 +24,8 @@ export default {
   },
   data () {
     return {
-      findListData: []
+      findListData: [],
+      userType:0
     }
   },
   props: {},
@@ -38,7 +39,6 @@ export default {
       // }).catch(err => {
       //   console.log(err)
       // })
-      console.log(2323)
       this.$http.get('/user/findList').then(res => {
         if (res.data.code === 0) {
           this.findListData = res.data.data
@@ -58,7 +58,9 @@ export default {
     this._initFindListData()
     // this.toFind()
   },
-  mounted () {},
+  mounted () {
+    this.userType = +sessionStorage.getItem('userType')
+  },
   destroyed () {}
 }
 </script>

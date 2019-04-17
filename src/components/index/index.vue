@@ -55,7 +55,7 @@ export default {
     return {
       swipeData: [
         {
-          pic: require('./img/swipe/bannertemp.e8a6fa63.jpg')
+          pic: require('./img/swipe/2.png')
         }
       ],
       types: [

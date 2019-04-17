@@ -1,18 +1,17 @@
 <!-- 订单 项目 组件 -->
-
 <template>
   <div class="order-item">
     <div class="top">
-      <img v-lazy="data.pic_url">
-      <div class="name">{{data.name}}</div>
+      <img v-lazy="data.seller_info[0].pic_url">
+      <div class="name">{{data.seller_info[0].name}}</div>
       <div class="status">订单已完成</div>
     </div>
-
     <div class="mid">
-      <div class="food">香辣爆炒牛肚煲仔饭<span>x1</span></div>
-      <div class="cost">总计1个菜，实付<span>￥12.00</span></div>
-    </div>
+      <div class="food" v-for="(item,index) in data.foods" :key="index">{{item.name}}<span>x1</span></div>
+      <div class="cost">总计{{data.foods.length}}个菜，实付<span>￥{{data.price}}</span></div>
+      
 
+    </div>
     <div class="bottom">
       <div class="again">再来一单</div>
     </div>
@@ -47,7 +46,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 180px;
+  height: 100%;
   padding: 15px 5px;
   color: #333;
   background-color: #fff;
