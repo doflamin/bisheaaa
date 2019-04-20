@@ -329,6 +329,28 @@ const findexList = async function (ctx) {
     ctx.body = resObj
   })
 }
+//更新店铺信息
+const updateMyMail = async function (ctx) {
+  const getsellerPromise = user.updateMyMail([
+    ctx.request.body.name,
+    ctx.request.body.type,
+    ctx.request.body.price,
+    ctx.request.body.fee,
+    ctx.request.body.average,
+    ctx.request.body.textarea,
+    ctx.request.body.deliveryTime,
+    ctx.request.body.ownerId,
+    ctx.request.body.description,
+    ctx.request.body.ownerId,
+  ]);
+  await getsellerPromise.then(res => {
+    // ctx.body.code = 0
+    let resObj = {}
+    resObj.code = 0;
+    resObj.data = res
+    ctx.body = resObj
+  })
+}
 //删除收藏
 const delCollection = async function (ctx) {
   const delAddressPromise = user.delCollection([ctx.request.body.newCol,ctx.request.body.user_id]);
