@@ -27,7 +27,6 @@ router.get('/getSellerList', user.getSellerList)
 
 
 
-router.post('/upload', user.upload)
 router.post('/deleteArticle', user.deleteArticle)
 router.post('/viewAdd', user.viewAdd)
 router.post('/addNewUser', user.addNewUser)
@@ -36,7 +35,6 @@ router.post('/delAddress', user.delAddress)
 router.post('/delOrder', user.delOrder)
 router.post('/delFoods', user.delFoods)
 router.post('/delseller', user.delseller)
-
 
 
 router.post('/addArticle', user.addArticle)
@@ -52,5 +50,8 @@ router.post('/restaurantList', user.restaurantList)
 router.post('/insertNewUser', user.insertNewUser)
 router.post('/addNewAdd', user.addNewAdd)
 router.post('/delAddress', user.delAddress)
+
+// 上传
+router.post('/uploadImg', user.uploadImg)
 
 module.exports = router

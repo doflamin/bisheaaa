@@ -1,4 +1,9 @@
-const user = require('../models/user.js')
+
+const fs = require('fs');
+var path = require('path')
+
+const user = require('../models/user.js.js')
+
 //获取用户信息
 const getUserInfo = async function (ctx) {
   const userInfoPromise = user.getUserByName([ctx.request.query.userName, ctx.request.query.pwd]);
@@ -203,9 +208,11 @@ const addNewAdd = async function (ctx) {
     ctx.body = res
   })
 }
+
 //插入新的文章
 const addArticle = async function (ctx) {
-  const addNewAddPromise = user.addArticle([ctx.request.body.title, ctx.request.body.desc,ctx.request.body.writerId]);
+
+  const addNewAddPromise = user.addArticle([ctx.request.body.title, ctx.request.body.desc, ctx.request.body.writerId, ctx.request.body.imgPath]);
   await addNewAddPromise.then(res => {
     ctx.body = res
   })
@@ -223,9 +230,9 @@ const addMyMail = async function (ctx) {
     ctx.request.body.ownerId,
     ctx.request.body.description,
 
-    
 
-    
+
+
   ]);
   await addNewAddPromise.then(res => {
     ctx.body = res
@@ -241,7 +248,7 @@ const addNewOrder = async function (ctx) {
     ctx.request.body.foods_id,
     ctx.request.body.totalPrice,
 
-    
+
   ]);
   await addNewAddPromise.then(res => {
     ctx.body = res
@@ -255,21 +262,13 @@ const addNewUser = async function (ctx) {
     ctx.request.body.email,
     ctx.request.body.type,
     ctx.request.body.collection,
-    ctx.request.body.money,   
+    ctx.request.body.money,
   ]);
   await addNewAddPromise.then(res => {
     ctx.body = res
   })
 }
 
-//上传图片
-const upload =  function () {
-  // const getindexListPromise = user.getindexList([]);
-  // await getindexListPromise.then(res => {
-  //   ctx.body = res
-  // })
-  console.log(222)
-}
 
 
 
@@ -375,8 +374,8 @@ const getOrderByUserId = async function (ctx) {
   }
   let resultArr = await Promise.all([...foodsArr.map(item => user.foods(item))])
   let sellerArr = await Promise.all([...seller.map(seller => user.seller(seller))])
-  
-  
+
+
   for (let i = 0; i < resultArr.length; i++) {
     tempArr.push({
       order_id: goodsArr[i].order_id,
@@ -390,6 +389,24 @@ const getOrderByUserId = async function (ctx) {
   resObj.data = tempArr
   ctx.body = resObj;
 
+}
+
+
+// 上传
+const uploadImg = async function (ctx) {
+  console.log(ctx.request.files);
+
+  // 上传图片
+  const uploadDir = `upload/`// 保存的文件夹
+  const file = ctx.request.files.file    // 获取上传文件
+  const ext = file.name.split('.').pop()        // 获取上传文件扩展名
+  const fileName = `${Date.parse(new Date())}.${ext}`  // 文件名
+  const filePath = `../${uploadDir}${fileName}`       // 文件路径
+  const reader = fs.createReadStream(file.path)    // 创建可读流
+  const upStream = fs.createWriteStream(path.join(__dirname, `${filePath}`))        // 创建可写流
+  reader.pipe(upStream)                                    // 可读流通过管道写入可写流
+
+  ctx.body = { code: 0, msg: 'success', data: {imgPath: filePath} }
 }
 
 module.exports = {
@@ -409,7 +426,6 @@ module.exports = {
   findList,
   article,
   addArticle,
-  upload,
   deleteArticle,
   viewAdd,
   addMyMail,
@@ -427,7 +443,7 @@ module.exports = {
   getFoodsList,
   getAdressList,
   getSellerList,
-  delUserById
-
+  delUserById,
+  uploadImg
 
 }

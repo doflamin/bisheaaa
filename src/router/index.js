@@ -4,7 +4,7 @@ Vue.use(Router)
 
 // 路由懒加载
 const Index = (resolve) => {
-  import('@/components/index/index').then((module) => {
+  import('@/components/index').then((module) => {
     resolve(module)
   })
 }
@@ -126,7 +126,7 @@ export default new Router({
       component: Admin
     },
 
-    
+
     // 登录
     {
       path: '/login',
@@ -172,7 +172,7 @@ export default new Router({
       path: '/addArticle',
       component: AddArticle
     },
-    
+
     // 商家修改店铺信息
     {
       path: '/myMall',
@@ -188,7 +188,7 @@ export default new Router({
       path: '/addOrder',
       component: addOrder
     },
-        
+
     //地址
     {
       path: '/address',
@@ -218,7 +218,7 @@ export default new Router({
     {
       path: '/mine',
       component: Mine,
-     
+
     }
   ]
 })

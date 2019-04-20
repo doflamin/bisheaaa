@@ -1,4 +1,4 @@
-const route = require('./server/route/index')
+const route = require('../my-app/bisheaaa/server/route/index')
 const koa = require('koa');
 const koaRouter = require('koa-router');
 const json = require('koa-json');
@@ -12,7 +12,9 @@ const app = new koa();
 app.use(cors())
 const router = new koaRouter();
 
-app.use(require('koa-bodyparser')());
+app.use(require('koa-body')({
+  multipart: true
+}));
 app.use(json());
 app.use(logger());
 

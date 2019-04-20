@@ -13,7 +13,11 @@
           <Input v-model="formTop.input2" type="textarea" :rows="4"></Input>
         </FormItem>
         <FormItem>
-            <Upload action="/user/posts/">
+            <Upload
+              action="//localhost:8002/user/uploadImg/"
+              :format="['jpg','jpeg','png']"
+              :on-success="uploadSuccess"
+            >
                 <Button icon="ios-cloud-upload-outline">Upload files</Button>
             </Upload>
         </FormItem>
@@ -28,7 +32,7 @@
 export default {
   data() {
     return {
-      
+      imgPath: '',
       formTop: {
         input1: "",
         input2: "",
@@ -45,7 +49,8 @@ export default {
         .post("/user/addArticle", {
           title: this.formTop.input1,
           desc: this.formTop.input2,
-          writerId:+sessionStorage.getItem('userId')
+          writerId:+sessionStorage.getItem('userId'),
+          imgPath: this.$data.imgPath
         })
         .then(res => {
           this.$Modal.success({
@@ -60,15 +65,11 @@ export default {
           console.log(err);
         });
     },
+    uploadSuccess(res) {
+      console.log(arguments);
+      this.$data.imgPath = res.data.imgPath
+    }
 
-   
-  },
-  mounted(){
-      this.$http.post('/user/upload').then(res => {
-        
-      }).catch(err => {
-        console.log(err)
-      })
   }
 };
 </script>

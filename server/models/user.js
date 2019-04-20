@@ -1,4 +1,4 @@
-const db = require('../config/db.js')
+const db = require('../config/db.js.js')
 const getUserByName = async function (name) {
 	const sql = `select * from user_info where userName = ? AND pwd = ?`
   return new Promise((resolve, reject) => {
@@ -142,7 +142,7 @@ const foods = async function (name) {
 	const sql = `SELECT * FROM mydatabase.foods_info where find_in_set(foods_id,?)`
   return new Promise((resolve, reject) => {
     db.query(sql, name).then(res => {
-      
+
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -153,7 +153,7 @@ const getOrderByUserId = async function (name) {
 	const sql = `SELECT * FROM mydatabase.order_info where owner_id = ?`
   return new Promise((resolve, reject) => {
     db.query(sql, name).then(res => {
-      
+
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -215,7 +215,7 @@ const insertNewAdd = async function (name) {
   })
 }
 const addArticle = async function (name) {
-	const sql = `insert into find_info (bizType,title,body,writer_id,view) values (1,?,?,?,0)`
+  const sql = `insert into find_info (bizType,title,body,writer_id,view, url) values (1,?,?,?,0,?)`
   return new Promise((resolve, reject) => {
     db.query(sql, name).then(res => {
       resolve(res)
@@ -284,8 +284,8 @@ const addMyMail = async function (name) {
     name,
     types,
     min_price_tip,
-    shipping_fee_tip, 
-    average_price_tip, 
+    shipping_fee_tip,
+    average_price_tip,
     infos,
     avg_delivery_time,
     owner_id,
@@ -334,7 +334,7 @@ const addNewUser = async function (name) {
   })
 
 
- 
+
 }
 
 
@@ -349,12 +349,12 @@ const getMyMail = async function (name) {
   })
 }
 const updateMyMail = async function (name) {
-  const sql = `UPDATE mydatabase.seller_info SET 
+  const sql = `UPDATE mydatabase.seller_info SET
   name=?,
   types=?,
   min_price_tip=?,
-  shipping_fee_tip=?, 
-  average_price_tip=?, 
+  shipping_fee_tip=?,
+  average_price_tip=?,
   infos=?,
   avg_delivery_time=?,
   owner_id=?,
@@ -412,7 +412,6 @@ const delseller = async function (name) {
     });
   })
 }
-
 
 module.exports = {
   delseller,
