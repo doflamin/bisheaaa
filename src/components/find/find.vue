@@ -41,7 +41,10 @@ export default {
       // })
       this.$http.get('/user/findList').then(res => {
         if (res.data.code === 0) {
+          
           this.findListData = res.data.data
+
+          console.log(this.findListData)
         }
       }).catch(err => {
         console.log(err)

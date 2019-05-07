@@ -1,4 +1,4 @@
-const route = require('../my-app/bisheaaa/server/route/index')
+const route = require('./server/route/index')
 const koa = require('koa');
 const koaRouter = require('koa-router');
 const json = require('koa-json');

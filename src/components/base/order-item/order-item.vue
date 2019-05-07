@@ -7,10 +7,8 @@
       <div class="status">订单已完成</div>
     </div>
     <div class="mid">
-      <div class="food" v-for="(item,index) in data.foods" :key="index">{{item.name}}<span>x1</span></div>
-      <div class="cost">总计{{data.foods.length}}个菜，实付<span>￥{{data.price}}</span></div>
-      
-
+      <div class="food" v-for="(item,index) in data.msg" :key="index">{{item.name}}<span>x{{item.count}}</span></div>
+      <div class="cost">总计{{data.count}}个菜，实付<span>￥{{data.price}}</span></div>
     </div>
     <div class="bottom">
       <div class="again">再来一单</div>

@@ -26,6 +26,7 @@ router.get('/getSellerList', user.getSellerList)
 
 
 
+router.post('/setCollection', user.setCollection)
 
 router.post('/deleteArticle', user.deleteArticle)
 router.post('/viewAdd', user.viewAdd)

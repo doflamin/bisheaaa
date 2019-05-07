@@ -64,7 +64,7 @@ export default {
         })
         .catch(err => {});
       this.data6 = JSON.parse(sessionStorage.getItem("order"));
-      this.totalPrice = JSON.parse(sessionStorage.getItem("totalPrice"));
+      this.totalPrice = JSON.parse(sessionStorage.getItem("totalPrice"))+JSON.parse(sessionStorage.getItem("peisong"));
 
       this.foodsList = [];
       for (let i = 0; i < this.data6.length; i++) {
@@ -88,13 +88,24 @@ export default {
                 content: "余额不足"
               });
             } else {
+              let arr = [];
+              for (let i = 0; i < this.data6.length; i++) {
+                let obj = {};
+                obj.name = this.data6[i].name;
+                obj.count = this.data6[i].count;
+                obj.price = this.data6[i].price;
+                arr.push(obj)
+
+                
+              }
               this.$http
                 .post("/user/addNewOrder", {
                   owner_id: +sessionStorage.getItem("userId"),
                   seller_id: +sessionStorage.getItem("sellerId"),
                   address_id: this.addressModel,
                   foods_id: this.foodsList.join(","),
-                  totalPrice: this.totalPrice
+                  totalPrice: this.totalPrice,
+                  order_msg:JSON.stringify(arr)
                 })
                 .then(res => {
                   this.$http
@@ -122,6 +133,10 @@ export default {
   },
   mounted() {
     this.freash();
+    
+
+    
+
   }
 };
 </script>

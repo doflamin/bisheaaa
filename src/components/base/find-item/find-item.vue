@@ -35,6 +35,9 @@ export default {
     }
   },
   watch: {},
+  computed:{
+
+  },
   methods: {
     toFind(item){
       sessionStorage.setItem('findId',item.find_id)

@@ -84,6 +84,8 @@ export default {
   },
   data() {
     return {
+      deliveryPrice:0,
+
       // 每个小球当前的状态
       balls: [
         { show: false },
@@ -111,11 +113,7 @@ export default {
         return [];
       }
     },
-    // 配送费
-    deliveryPrice: {
-      type: Number,
-      default: 0
-    },
+    
     // 起送费
     minPrice: {
       type: Number,
@@ -214,11 +212,13 @@ export default {
       }
       // mint UI
       // MessageBox.confirm(`您共需支付 ${this.totalPrice} 元`, '结算')
-
+      
       if (sessionStorage.getItem("userId")) {
+
+
+
         sessionStorage.setItem("order", JSON.stringify(this.selectFoods));
         sessionStorage.setItem("totalPrice", JSON.stringify(this.totalPrice));
-
         this.$router.push({
           path: "/addOrder"
         });
@@ -274,7 +274,10 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.deliveryPrice = +sessionStorage.getItem('peisong');
+    this.minPrice = +sessionStorage.getItem('qisong')
+  },
   destroyed() {}
 };
 </script>

@@ -42,6 +42,15 @@ export default {
         .get("/user/getOrderByUserId?userId="+sessionStorage.getItem('userId'))
         .then(res => {
           this.orderData = res.data.data.reverse();
+          for (let i = 0; i < this.orderData.length; i++) {
+            var arr = []
+            for (let j = 0; j < this.orderData[i].msg.length; j++) {
+              arr.push(this.orderData[i].msg[j].count)
+              this.orderData[i].count = eval(arr.join('+'))             
+            }
+          }
+          console.log(this.orderData)
+
         })
         .catch(err => {
           console.log(err);

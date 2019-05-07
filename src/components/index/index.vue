@@ -106,6 +106,10 @@ export default {
     },
     toRestaurant (item) {
       sessionStorage.setItem('sellerId',item.id)
+      sessionStorage.setItem('peisong',item.shipping_fee_tip)
+      sessionStorage.setItem('qisong',item.min_price_tip)
+
+
       this.$router.push({
         path: '/restaurant'
       })

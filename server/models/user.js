@@ -1,4 +1,4 @@
-const db = require('../config/db.js.js')
+const db = require('../config/db.js')
 const getUserByName = async function (name) {
 	const sql = `select * from user_info where userName = ? AND pwd = ?`
   return new Promise((resolve, reject) => {
@@ -161,6 +161,21 @@ const getOrderByUserId = async function (name) {
   })
 }
 
+const setCollection = async function (name) {
+ 
+  
+	const sql = `update  user_info SET collection = ? where userId = ? `
+
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+
 
 const getAddress = async function (name) {
 	const sql = `select * from add_info where user_id = ?`
@@ -215,7 +230,7 @@ const insertNewAdd = async function (name) {
   })
 }
 const addArticle = async function (name) {
-  const sql = `insert into find_info (bizType,title,body,writer_id,view, url) values (1,?,?,?,0,?)`
+  const sql = `insert into find_info (bizType,title,body,writer_id,view, img) values (1,?,?,?,0,?)`
   return new Promise((resolve, reject) => {
     db.query(sql, name).then(res => {
       resolve(res)
@@ -306,8 +321,9 @@ const addNewOrder = async function (name) {
     seller_id,
     address_id,
     foods_id,
-    price
-    ) VALUES (?,?,?,?,?);`
+    price,
+    msg
+    ) VALUES (?,?,?,?,?,?);`
   return new Promise((resolve, reject) => {
     db.query(sql, name).then(res => {
       resolve(res)
@@ -421,6 +437,7 @@ module.exports = {
   getUserByName,
   getindexList,
   getisExistence,
+  setCollection,
   insertNewUser,
   insertNewAdd,
   getAddress,

@@ -84,6 +84,7 @@ export default {
           newCol:str
         })
         .then(res => {
+          sessionStorage.setItem('userCollection',str)
           this.freash()
         })
         .catch(err => {});
@@ -98,6 +99,7 @@ export default {
             this.colArr.push(res.data[i].id)
             
           }
+
         })
         .catch(err => {});
         console.log(this.colArr)

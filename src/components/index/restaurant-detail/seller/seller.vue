@@ -10,10 +10,10 @@
 
           <div class="star-wrapper">
             <star :size="36" :score="seller.score"></star>
-            <span class="ratingCount">({{seller.ratingCount}})</span>
+            <span class="ratingCount">({{seller.score}})</span>
           </div>
 
-          <div class="sellCount">月售{{seller.sellCount}}单</div>
+          <div class="sellCount">月售{{seller.month_sale_num}}单</div>
 
           <div class="collect-icon" @click="toggleFavorites">
             <i class="icon-favorite" :class="{'active': favorite}"></i>
@@ -24,17 +24,17 @@
         <div class="param">
           <div class="left">
             <span class="text">起送价</span>
-            <span class="price"><span class="num">{{seller.minPrice}}</span>元</span>
+            <span class="price"><span class="num">{{seller.min_price_tip}}</span>元</span>
           </div>
 
           <div class="mid">
             <span class="text">商家配送</span>
-            <span class="price"><span class="num">{{seller.deliveryPrice}}</span>元</span>
+            <span class="price"><span class="num">{{seller.shipping_fee_tip}}</span>元</span>
           </div>
 
           <div class="right">
             <span class="text">平均配送时间</span>
-            <span class="price"><span class="num">{{seller.deliveryTime}}</span>分钟</span>
+            <span class="price"><span class="num">{{seller.avg_delivery_time}}</span>分钟</span>
           </div>
         </div>
       </div>
@@ -58,18 +58,7 @@
       <!-- 横线分隔条 -->
       <cross-line></cross-line>
 
-      <!-- 商家实景 -->
-      <div class="photo">
-        <h1 class="title">商家实景</h1>
-
-        <div class="pic-wrapper" ref="picRef">
-          <ul class="pic-list" ref="picListRef">
-            <li class="pic-item"v-for="pic in seller.pics">
-              <img :src="pic">
-            </li>
-          </ul>
-        </div>
-      </div>
+     
 
       <!-- 横线分隔条 -->
       <cross-line></cross-line>
@@ -77,7 +66,7 @@
       <div class="info">
         <h1 class="title">商家信息</h1>
         <ul>
-          <li v-for="item in seller.infos" class="item">{{item}}</li>
+          <li >{{seller.infos}}</li>
         </ul>
       </div>
     </div>
@@ -154,6 +143,36 @@ export default {
       }
       this.favorite = !this.favorite
       console.log(store.setLocalstorage(this.seller.id, 'favorites', this.favorite))
+      var arr =   sessionStorage.getItem('userCollection').split(',')
+      var bFlag = false;
+      for (let i = 0; i < arr.length; i++) {         
+        if (arr[i] == this.seller.id) {
+          arr.splice(i,1)
+          bFlag = true;       
+        } else{
+        }     
+      }
+      if (bFlag == false) {
+          arr.push(this.seller.id)
+          sessionStorage.setItem('userCollection',arr)
+      }else{
+          sessionStorage.setItem('userCollection',arr)
+
+      }
+      console.log(bFlag)
+
+      console.log(arr)
+
+      this.$http.post('/user/setCollection',{
+        collection:sessionStorage.getItem('userCollection'),
+        userId: +sessionStorage.getItem('userId')
+      })
+      .then(res=>{
+
+      })
+      .catch(err=>{
+
+      })
     }
   },
   filters: {},

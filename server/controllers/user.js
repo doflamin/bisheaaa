@@ -2,7 +2,7 @@
 const fs = require('fs');
 var path = require('path')
 
-const user = require('../models/user.js.js')
+const user = require('../models/user.js')
 
 //获取用户信息
 const getUserInfo = async function (ctx) {
@@ -247,6 +247,8 @@ const addNewOrder = async function (ctx) {
     ctx.request.body.address_id,
     ctx.request.body.foods_id,
     ctx.request.body.totalPrice,
+    ctx.request.body.order_msg
+
 
 
   ]);
@@ -357,6 +359,14 @@ const delCollection = async function (ctx) {
     ctx.body = res
   })
 }
+//修改收藏信息
+const setCollection = async function (ctx) {
+  const delAddressPromise = user.setCollection([ctx.request.body.collection,ctx.request.body.userId]);
+  await delAddressPromise.then(res => {
+    ctx.body = res
+  })
+}
+
 
 //根据用户id获取用户订单信息
 const getOrderByUserId = async function (ctx) {
@@ -380,7 +390,7 @@ const getOrderByUserId = async function (ctx) {
     tempArr.push({
       order_id: goodsArr[i].order_id,
       price: goodsArr[i].price,
-
+      msg: JSON.parse(goodsArr[i].msg),
       seller_info: sellerArr[i],
       foods: resultArr[i],
     })
@@ -397,21 +407,22 @@ const uploadImg = async function (ctx) {
   console.log(ctx.request.files);
 
   // 上传图片
-  const uploadDir = `upload/`// 保存的文件夹
+  const uploadDir = `uploads/`// 保存的文件夹
   const file = ctx.request.files.file    // 获取上传文件
   const ext = file.name.split('.').pop()        // 获取上传文件扩展名
   const fileName = `${Date.parse(new Date())}.${ext}`  // 文件名
-  const filePath = `../${uploadDir}${fileName}`       // 文件路径
+  const filePath = `../../static/${uploadDir}${fileName}`       // 文件路径
   const reader = fs.createReadStream(file.path)    // 创建可读流
   const upStream = fs.createWriteStream(path.join(__dirname, `${filePath}`))        // 创建可写流
   reader.pipe(upStream)                                    // 可读流通过管道写入可写流
 
-  ctx.body = { code: 0, msg: 'success', data: {imgPath: filePath} }
+  ctx.body = { code: 0, msg: 'success', data: {imgPath: '../../'+filePath} }
 }
 
 module.exports = {
   delseller,
   delFoods,
+  setCollection,
   getUserInfo,
   indexList,
   isExistence,
