@@ -102,7 +102,8 @@ export default {
       // 已经下落的小球（show = true）
       dropBalls: [],
       // 购物车列表是否折叠
-      listShow: false
+      listShow: false,
+      minPrice:0
     };
   },
   props: {
@@ -115,10 +116,10 @@ export default {
     },
     
     // 起送费
-    minPrice: {
-      type: Number,
-      default: 0
-    }
+    // minPrice: {
+    //   type: Number,
+    //   default: 0
+    // }
   },
   watch: {
     selectFoods() {

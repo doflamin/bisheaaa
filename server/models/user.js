@@ -304,8 +304,13 @@ const addMyMail = async function (name) {
     infos,
     avg_delivery_time,
     owner_id,
-    description
-    ) VALUES (?,?,?,?,?,?,?,?,?);`
+    description,
+    icon_url,
+    info,
+    bulletin,
+    pic_url,
+    distance
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);`
   return new Promise((resolve, reject) => {
     db.query(sql, name).then(res => {
       resolve(res)
@@ -352,6 +357,33 @@ const addNewUser = async function (name) {
 
 
 }
+const addGoods = async function (name) {
+	const sql = `INSERT INTO mydatabase.goods_info (
+    name,
+    owner_id,
+    type,
+    foods_id
+    ) VALUES (?,?,-1,?);`
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+const addFoods = async function (name) {
+	const sql = `INSERT INTO mydatabase.foods_info (name,owner_id,sellCount,price,image,description,rating,icon) VALUES (?,?,0,?,?,?,0,?);`
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+
+
 
 
 const getMyMail = async function (name) {
@@ -373,9 +405,31 @@ const updateMyMail = async function (name) {
   average_price_tip=?,
   infos=?,
   avg_delivery_time=?,
-  owner_id=?,
-  description=?
-  WHERE owner_id=?;`
+  description=?,
+  icon_url=?,
+  info=?,
+  bulletin = ? WHERE owner_id=?;`
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+
+const updateGoodsofSeller = async function (name) {
+  const sql = `UPDATE mydatabase.seller_info SET goods_id=? WHERE id=?;`
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+const updateFoodsofSeller = async function (name) {
+  const sql = `UPDATE mydatabase.goods_info SET foods_id=? WHERE goods_id=?;`
   return new Promise((resolve, reject) => {
     db.query(sql, name).then(res => {
       resolve(res)
@@ -418,6 +472,8 @@ const delFoods = async function (name) {
   })
 }
 
+
+
 const delseller = async function (name) {
 	const sql = `DELETE FROM mydatabase.seller_info WHERE id=?  `
   return new Promise((resolve, reject) => {
@@ -429,9 +485,21 @@ const delseller = async function (name) {
   })
 }
 
+
+const deleteGoods = async function (name) {
+	const sql = `DELETE FROM mydatabase.goods_info WHERE goods_id=?  `
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
 module.exports = {
   delseller,
   delFoods,
+  deleteGoods,
   delOrder,
   delUserById,
   getUserByName,
@@ -441,12 +509,16 @@ module.exports = {
   insertNewUser,
   insertNewAdd,
   getAddress,
+  updateFoodsofSeller,
+  updateGoodsofSeller,
   delAddress,
   restaurantList,
   seller,
   goods,
   foods,
+  addFoods,
   findList,
+  addGoods,
   article,
   addArticle,
   deleteArticle,

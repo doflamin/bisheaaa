@@ -114,21 +114,7 @@ export default {
       .catch(err=>{
         
       })
-      axios.get('/api/goods').then(res => {
-        // if (res.data.code === 0) {
-        //   this.goods = res.data.data
-        // }
-
-        // // DOM 渲染完成才能进行计算
-        // setTimeout(() => {
-        //   // 初始化 BScroll
-        //   this._initScroll()
-        //   // 计算右侧每一大项的高度
-        //   this._calcHeight()
-        // }, 20)
-      }).catch(err => {
-        console.log(err)
-      })
+      
     },
     // 初始化 BScroll
     _initScroll () {

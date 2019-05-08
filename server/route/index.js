@@ -44,6 +44,15 @@ router.post('/updateMyMail', user.updateMyMail)
 router.post('/delCollection', user.delCollection)
 router.post('/setMoney', user.setMoney)
 
+router.post('/addGoods', user.addGoods)
+router.post('/updateGoodsofSeller', user.updateGoodsofSeller)
+router.post('/addFoods', user.addFoods)
+router.post('/updateFoodsofSeller', user.updateFoodsofSeller)
+
+router.post('/deleteGoods', user.deleteGoods)
+
+
+
 
 router.post('/addNewOrder', user.addNewOrder)
 

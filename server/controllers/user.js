@@ -92,6 +92,8 @@ const goods = async function (ctx) {
   for (let i = 0; i < resultArr.length; i++) {
     tempArr.push({
       name: goodsArr[i].name,
+      id: goodsArr[i].goods_id,
+
       type: +goodsArr[i].type,
       foods: resultArr[i],
     })
@@ -229,6 +231,17 @@ const addMyMail = async function (ctx) {
     ctx.request.body.deliveryTime,
     ctx.request.body.ownerId,
     ctx.request.body.description,
+    ctx.request.body.icon_url,
+    ctx.request.body.info,
+    ctx.request.body.bulletin,
+    ctx.request.body.pic_url,
+    ctx.request.body.distance,
+
+
+    
+
+
+    
 
 
 
@@ -271,6 +284,34 @@ const addNewUser = async function (ctx) {
   })
 }
 
+//添加分类
+const addGoods = async function (ctx) {
+  const addNewAddPromise = user.addGoods([
+    ctx.request.body.addGoodsValue,
+    ctx.request.body.ownerId,
+    ctx.request.body.foods_id,
+
+   
+  ]);
+  await addNewAddPromise.then(res => {
+    ctx.body = res
+  })
+}
+//添加菜品
+const addFoods = async function (ctx) {
+  const addNewAddPromise = user.addFoods([
+    ctx.request.body.addFoodsValue,
+    ctx.request.body.ownerId,
+    ctx.request.body.addFoodsPrice,
+    ctx.request.body.imgPath,
+    ctx.request.body.addFoodsDescription,
+    ctx.request.body.icon
+
+  ]);
+  await addNewAddPromise.then(res => {
+    ctx.body = res
+  })
+}
 
 
 
@@ -308,28 +349,7 @@ const getMyMail = async function (ctx) {
     ctx.body = resObj
   })
 }
-//商家更新我的店铺信息
-const findexList = async function (ctx) {
-  const getsellerPromise = user.updateMyMail([
-    ctx.request.body.name,
-    ctx.request.body.type,
-    ctx.request.body.price,
-    ctx.request.body.fee,
-    ctx.request.body.average,
-    ctx.request.body.textarea,
-    ctx.request.body.deliveryTime,
-    ctx.request.body.ownerId,
-    ctx.request.body.description,
-    ctx.request.body.ownerId,
-  ]);
-  await getsellerPromise.then(res => {
-    // ctx.body.code = 0
-    let resObj = {}
-    resObj.code = 0;
-    resObj.data = res
-    ctx.body = resObj
-  })
-}
+
 //更新店铺信息
 const updateMyMail = async function (ctx) {
   const getsellerPromise = user.updateMyMail([
@@ -340,9 +360,14 @@ const updateMyMail = async function (ctx) {
     ctx.request.body.average,
     ctx.request.body.textarea,
     ctx.request.body.deliveryTime,
-    ctx.request.body.ownerId,
     ctx.request.body.description,
+    ctx.request.body.icon_url,
+    ctx.request.body.info,
+    ctx.request.body.bulletin,
+
     ctx.request.body.ownerId,
+
+    
   ]);
   await getsellerPromise.then(res => {
     // ctx.body.code = 0
@@ -352,6 +377,40 @@ const updateMyMail = async function (ctx) {
     ctx.body = resObj
   })
 }
+//更新店铺信息
+const updateGoodsofSeller = async function (ctx) {
+  const getsellerPromise = user.updateGoodsofSeller([
+    ctx.request.body.arr,
+    ctx.request.body.seller,
+
+    
+  ]);
+  await getsellerPromise.then(res => {
+    // ctx.body.code = 0
+    let resObj = {}
+    resObj.code = 0;
+    resObj.data = res
+    ctx.body = resObj
+  })
+}
+
+const updateFoodsofSeller = async function (ctx) {
+  const getsellerPromise = user.updateFoodsofSeller([
+    ctx.request.body.arr,
+    ctx.request.body.seller,
+
+    
+  ]);
+  await getsellerPromise.then(res => {
+    // ctx.body.code = 0
+    let resObj = {}
+    resObj.code = 0;
+    resObj.data = res
+    ctx.body = resObj
+  })
+}
+
+
 //删除收藏
 const delCollection = async function (ctx) {
   const delAddressPromise = user.delCollection([ctx.request.body.newCol,ctx.request.body.user_id]);
@@ -359,6 +418,17 @@ const delCollection = async function (ctx) {
     ctx.body = res
   })
 }
+//删除分类
+const deleteGoods = async function (ctx) {
+  const delAddressPromise = user.deleteGoods([ctx.request.body.GoodsId]);
+  await delAddressPromise.then(res => {
+    ctx.body = res
+  })
+}
+
+
+
+
 //修改收藏信息
 const setCollection = async function (ctx) {
   const delAddressPromise = user.setCollection([ctx.request.body.collection,ctx.request.body.userId]);
@@ -422,11 +492,16 @@ const uploadImg = async function (ctx) {
 module.exports = {
   delseller,
   delFoods,
+  addGoods,
   setCollection,
   getUserInfo,
   indexList,
   isExistence,
+  updateGoodsofSeller,
+  updateFoodsofSeller,
   insertNewUser,
+  addFoods,
+  deleteGoods,
   addNewAdd,
   getAddress,
   delOrder,

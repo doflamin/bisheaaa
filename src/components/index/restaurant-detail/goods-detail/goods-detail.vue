@@ -48,7 +48,7 @@
         <cross-line></cross-line>
 
         <!-- 商品评价 -->
-        <div class="ratings">
+        <!-- <div class="ratings">
           <h1 class="title">商品评价</h1>
 
           <ratings-select :ratings="food.ratings"
@@ -75,10 +75,10 @@
               </li>
             </ul>
 
-            <!-- 无评价时的样式 -->
+            
             <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- 返回按钮 -->
