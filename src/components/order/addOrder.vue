@@ -64,7 +64,9 @@ export default {
         })
         .catch(err => {});
       this.data6 = JSON.parse(sessionStorage.getItem("order"));
-      this.totalPrice = JSON.parse(sessionStorage.getItem("totalPrice"))+JSON.parse(sessionStorage.getItem("peisong"));
+      this.totalPrice =
+        JSON.parse(sessionStorage.getItem("totalPrice")) +
+        JSON.parse(sessionStorage.getItem("peisong"));
 
       this.foodsList = [];
       for (let i = 0; i < this.data6.length; i++) {
@@ -94,9 +96,7 @@ export default {
                 obj.name = this.data6[i].name;
                 obj.count = this.data6[i].count;
                 obj.price = this.data6[i].price;
-                arr.push(obj)
-
-                
+                arr.push(obj);
               }
               this.$http
                 .post("/user/addNewOrder", {
@@ -105,7 +105,7 @@ export default {
                   address_id: this.addressModel,
                   foods_id: this.foodsList.join(","),
                   totalPrice: this.totalPrice,
-                  order_msg:JSON.stringify(arr)
+                  order_msg: JSON.stringify(arr)
                 })
                 .then(res => {
                   this.$http
@@ -114,13 +114,33 @@ export default {
                       money: parseInt(this.money) - parseInt(this.totalPrice)
                     })
                     .then(res => {
-                      this.$Modal.success({
-                        title: "成功",
-                        content: "商家已接单,请耐心等候",
-                        onOk: () => {
-                          this.$router.push("/index");
-                        }
-                      });
+                      this.$http
+                        .get(
+                          "/user/getSellerMoneyByOwnerId?owner_id=" +
+                            sessionStorage.getItem("ownerId")
+                        )
+                        .then(res => {
+                          this.sellerMoney = res.data[0].money;
+                          this.$http
+                            .post("/user/setMoney", {
+                              userId: +sessionStorage.getItem("ownerId"),
+                              money:
+                                parseInt(this.sellerMoney) +
+                                parseInt(this.totalPrice) -
+                                parseInt(sessionStorage.getItem("peisong"))
+                            })
+                            .then(res => {
+                              this.$Modal.success({
+                                title: "成功",
+                                content: "商家已接单,请耐心等候",
+                                onOk: () => {
+                                  this.$router.push("/index");
+                                }
+                              });
+                            })
+                            .catch(err => {});
+                        })
+                        .catch(err => {});
                     })
                     .catch(err => {});
                 })
@@ -133,10 +153,6 @@ export default {
   },
   mounted() {
     this.freash();
-    
-
-    
-
   }
 };
 </script>

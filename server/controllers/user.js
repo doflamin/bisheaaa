@@ -145,6 +145,15 @@ const getCollection = async function (ctx) {
     ctx.body = res
   })
 }
+//获取一个商家的余额
+const getSellerMoneyByOwnerId = async function (ctx) {
+  const getAddressPromise = user.getSellerMoneyByOwnerId([ctx.request.query.owner_id]);
+  await getAddressPromise.then(res => {
+    ctx.body = res
+  })
+}
+
+
 
 
 //删除用户
@@ -496,6 +505,7 @@ module.exports = {
   setCollection,
   getUserInfo,
   indexList,
+  getSellerMoneyByOwnerId,
   isExistence,
   updateGoodsofSeller,
   updateFoodsofSeller,

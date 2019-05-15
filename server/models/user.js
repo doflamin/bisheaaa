@@ -396,6 +396,19 @@ const getMyMail = async function (name) {
     });
   })
 }
+
+const getSellerMoneyByOwnerId = async function (name) {
+	const sql = `SELECT money FROM mydatabase.user_info where userId = ?`
+  return new Promise((resolve, reject) => {
+    db.query(sql, name).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  })
+}
+
+
 const updateMyMail = async function (name) {
   const sql = `UPDATE mydatabase.seller_info SET
   name=?,
@@ -499,6 +512,7 @@ const deleteGoods = async function (name) {
 module.exports = {
   delseller,
   delFoods,
+  getSellerMoneyByOwnerId,
   deleteGoods,
   delOrder,
   delUserById,

@@ -18,6 +18,10 @@ router.get('/getOrderByUserId', user.getOrderByUserId)
 router.get('/getMoney', user.getMoney)
 router.get('/getUserList', user.getUserList)
 router.get('/getOrderList', user.getOrderList)
+router.get('/getSellerMoneyByOwnerId', user.getSellerMoneyByOwnerId)
+
+
+
 router.get('/getFoodsList', user.getFoodsList)
 router.get('/getAdressList', user.getAdressList)
 router.get('/getSellerList', user.getSellerList)
